@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="assets/dropdown/css/style.css">
+    <link rel="stylesheet" href="assets/socicon/css/styles.css">
+    <link rel="stylesheet" href="assets/theme/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;700&display=swap&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css?v=Wf9Ojj"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css?v=Wf9Ojj" type="text/css">
+    <style>
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+
+        .description-section {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+
+        .sections-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: stretch; /* Iguala la altura de los contenedores hijos */
+        }
+
+
+        .profile-section {
+            width: 48%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd; /* Opcional: para visualizar los contenedores */
+            border-radius: 8px; /* Opcional: bordes redondeados */
+            background-color: #f9f9f9; /* Opcional: fondo claro */
+        }
+
+
+        .profile-section form {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Asegura que el formulario ocupe toda la altura del contenedor */
+        }
+
+
+        .profile-section label {
+            margin-bottom: 5px;
+            font-weight: bold; /* Opcional: resalta las etiquetas */
+        }
+
+
+        .profile-section input, .profile-section textarea {
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%; /* Asegura que los inputs ocupen todo el ancho */
+        }
+
+
+        .btn-guardar {
+            padding: 12px 25px;
+            background-color: #28a745;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .btn-guardar:hover {
+            background-color: #218838;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Llamada al menu -->
+    <%- include("../routes/header.ejs") %>
+    <br>
+
+
+    <section data-bs-version="5.1" class="people07 cid-u7G9MjbGh4" id="people07-d">
+        <p class="card-title mbr-fonts-style mt-3 display-7 justify-content-right">
+            <div class="img-wrapper mt-4 justify-content-center">
+                <strong>Perfil de <%= usuario.nombre %></strong>
+                <img src="/imagen/<%= usuario.id %>" alt="Foto de perfil">
+            </div>
+            <div class="img-wrapper mt-4 justify-content-center">
+                <a href="/perfil/<%= username %>/siguiendo">Siguiendo: <%= seguidos %></a>
+                <a href="/perfil/<%= username %>/seguidores" style="margin-left: 15px;">Seguidores: <%= seguidores %></a>
+            </div>
+        </p>
+
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-8">
+
+
+                    <% if (mensaje) { %>
+                        <div class="alert alert-<%= mensaje === 'exito' ? 'success' : 'danger' %> alert-dismissible fade show" role="alert">
+                            <%= mensaje === 'exito' ? 'Perfil actualizado con éxito.' : 'Ha ocurrido un error al actualizar el perfil.' %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+                                      
+
+
+                    <form action="/modifica_foto2" method="post" enctype="multipart/form-data">
+                        <input type="file" name="image" accept="image/*">
+                        <input type="submit" value="Modifica foto" name="submit">
+                    </form>
+                    <br>
+                   
+               
+                    <div class="profile-container">
+                        <!-- Descripción en el medio -->
+                        <form action="/actualizar-perfil" method="post">
+                            <div class="profile-container">
+                                <div class="description-section">
+                                    <label for="descripcion">Descripción:</label>
+                                    <textarea id="descripcion" name="descripcion" style="width: 100%;"><%= usuario.descripcion || '' %></textarea>
+                                </div>
+
+
+                        <!-- Redes sociales e información personal -->
+                        <div class="sections-container">
+                            <div class="profile-section">
+                                <p><b>Redes sociales</b></p>
+                                <% const redes = [
+                                    { nombre: "Twitter", icono: "fab fa-twitter", url: "https://twitter.com/" },
+                                    { nombre: "Instagram", icono: "fab fa-instagram", url: "https://www.instagram.com/" },
+                                    { nombre: "LinkedIn", icono: "fab fa-linkedin-in", url: "https://www.linkedin.com/in/" },
+                                    { nombre: "GitHub", icono: "fab fa-github", url: "https://github.com/" }
+                                ]; %>
+
+                            <% redes.forEach(red => { %>
+                                <label for="<%= red.nombre.toLowerCase() %>">
+                                    <i class="<%= red.icono %>"></i> <%= red.nombre %>
+                                </label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <a href="<%= red.url + (usuario[red.nombre.toLowerCase()] || '') %>" target="_blank">
+                                        <i class="<%= red.icono %>"></i> <%= red.nombre %>
+                                    </a>
+                                    <input type="text" id="<%= red.nombre.toLowerCase() %>" name="<%= red.nombre.toLowerCase() %>" placeholder="Tu usuario en <%= red.nombre %>"
+                                        value="<%= usuario[red.nombre.toLowerCase()] || '' %>">
+                                </div>
+                                <br>
+                                <% }) %>
+                            </div>
+
+
+                            <div class="profile-section">
+                                <p><b>Información personal</b></p>
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" value="<%= usuario.nombre %>" required>
+                                <br>
+                                <label for="apellido">Apellido:</label>
+                                <input type="text" id="apellido" name="apellido" value="<%= usuario.apellido %>" required>
+                                <br>
+                                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="<%= usuario.fecha_nacimiento ? new Date(usuario.fecha_nacimiento).toISOString().slice(0,10) : '' %>" required>
+                                <br>
+                                <label for="telefono">Teléfono:</label>
+                                <input type="tel" id="telefono" name="telefono" value="<%= usuario.telefono %>">
+                                <br><br>
+                                <a href="/borrar" style="
+                                display: inline-block;
+                                padding: 10px 20px;
+                                font-size: 1em;
+                                font-weight: bold;
+                                color: #fff;
+                                text-decoration: none;
+                                background: linear-gradient(45deg, #ff416c, #ff4b2b);
+                                border-radius: 5px;
+                                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                                text-align: center;
+                            ">
+                                Borrar usuario
+                            </a>
+                            </div>
+                        </div>
+                        <!-- Botón unico de gurdado -->
+                         <div style="text-align: center; margin-top: 20px;">
+                            <button type="submit" class="btn-guardar">Guardar todos los cambios</button>
+                            <br><br>
+                            <a href="/mis_publicaciones" >Mis publicaciones</a>
+                           
+                         </div>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+   
+    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/smoothscroll/smooth-scroll.js"></script>
+    <script src="assets/ytplayer/index.js"></script>
+    <script src="assets/dropdown/js/navbar-dropdown.js"></script>
+    <script src="assets/vimeoplayer/player.js"></script>
+    <script src="assets/masonry/masonry.pkgd.min.js"></script>
+    <script src="assets/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/theme/js/script.js"></script>
+    <%- include("../routes/footer.ejs") %>
+</body>
+</html>
