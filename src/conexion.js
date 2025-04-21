@@ -1,12 +1,12 @@
-const mysql = require('mysql2');
+const mysql = require('mysql');
 
 // MySQL Connection
 const connection = mysql.createConnection({
-    host: 'metro.proxy.rlwy.net',
-    port: 24433,
+    host: 'localhost',
+    port: 3306,
     user: 'root',
-    password: 'pjYFXPCogwDoBFbMEoWLwVtnzzXBPcGa',
-    database: 'railway',
+    password: 'root12',
+    database: 'red_social',
 });
 
 connection.connect((err) => {
